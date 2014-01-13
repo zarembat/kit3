@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="InsuranceCompanyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="AdressSet">
+    <Key>
+      <PropertyRef Name="AdressId" />
+    </Key>
+    <Property Name="AdressId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Town" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Street" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="HouseNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ZipCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="HouseSet" Relationship="Self.FK_AdressSetHouseSet" FromRole="AdressSet" ToRole="HouseSet" />
+    <NavigationProperty Name="ClientSet" Relationship="Self.FK_ClientAdress" FromRole="AdressSet" ToRole="ClientSet" />
+  </EntityType>
+  <EntityType Name="CarSet">
+    <Key>
+      <PropertyRef Name="ObjectId" />
+    </Key>
+    <Property Name="ObjectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Brand" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Year" Type="Int32" Nullable="false" />
+    <Property Name="VinNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Engine" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Policy_PolicyId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="PolicySet" Relationship="Self.FK_CarPolicy" FromRole="CarSet" ToRole="PolicySet" />
+  </EntityType>
+  <EntityType Name="ClientSet">
+    <Key>
+      <PropertyRef Name="ClientId" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Surname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PESEL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="AdressAdressId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="AdressSet" Relationship="Self.FK_ClientAdress" FromRole="ClientSet" ToRole="AdressSet" />
+    <NavigationProperty Name="PolicySet" Relationship="Self.FK_PolicyClient" FromRole="ClientSet" ToRole="PolicySet" />
+  </EntityType>
+  <EntityType Name="EmployeeSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Login" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Surname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="HouseSet">
+    <Key>
+      <PropertyRef Name="ObjectId" />
+    </Key>
+    <Property Name="ObjectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Year" Type="Int32" Nullable="false" />
+    <Property Name="Size" Type="Int32" Nullable="false" />
+    <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Policy_PolicyId" Type="Int32" Nullable="false" />
+    <Property Name="AdressSet_AdressId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="AdressSet" Relationship="Self.FK_AdressSetHouseSet" FromRole="HouseSet" ToRole="AdressSet" />
+    <NavigationProperty Name="PolicySet" Relationship="Self.FK_HousePolicy" FromRole="HouseSet" ToRole="PolicySet" />
+  </EntityType>
+  <EntityType Name="PolicySet">
+    <Key>
+      <PropertyRef Name="PolicyId" />
+    </Key>
+    <Property Name="PolicyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Duration" Type="Int32" Nullable="false" />
+    <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ObjectType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ClientClientId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="CarSet" Relationship="Self.FK_CarPolicy" FromRole="PolicySet" ToRole="CarSet" />
+    <NavigationProperty Name="ClientSet" Relationship="Self.FK_PolicyClient" FromRole="PolicySet" ToRole="ClientSet" />
+    <NavigationProperty Name="HouseSet" Relationship="Self.FK_HousePolicy" FromRole="PolicySet" ToRole="HouseSet" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_AdressSetHouseSet">
+    <End Role="AdressSet" Type="Self.AdressSet" Multiplicity="1" />
+    <End Role="HouseSet" Type="Self.HouseSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AdressSet">
+        <PropertyRef Name="AdressId" />
+      </Principal>
+      <Dependent Role="HouseSet">
+        <PropertyRef Name="AdressSet_AdressId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ClientAdress">
+    <End Role="AdressSet" Type="Self.AdressSet" Multiplicity="1" />
+    <End Role="ClientSet" Type="Self.ClientSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AdressSet">
+        <PropertyRef Name="AdressId" />
+      </Principal>
+      <Dependent Role="ClientSet">
+        <PropertyRef Name="AdressAdressId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CarPolicy">
+    <End Role="PolicySet" Type="Self.PolicySet" Multiplicity="1" />
+    <End Role="CarSet" Type="Self.CarSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PolicySet">
+        <PropertyRef Name="PolicyId" />
+      </Principal>
+      <Dependent Role="CarSet">
+        <PropertyRef Name="Policy_PolicyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PolicyClient">
+    <End Role="ClientSet" Type="Self.ClientSet" Multiplicity="1" />
+    <End Role="PolicySet" Type="Self.PolicySet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientSet">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="PolicySet">
+        <PropertyRef Name="ClientClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_HousePolicy">
+    <End Role="PolicySet" Type="Self.PolicySet" Multiplicity="1" />
+    <End Role="HouseSet" Type="Self.HouseSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PolicySet">
+        <PropertyRef Name="PolicyId" />
+      </Principal>
+      <Dependent Role="HouseSet">
+        <PropertyRef Name="Policy_PolicyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="InsuranceCompanyEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="AdressSet" EntityType="Self.AdressSet" />
+    <EntitySet Name="CarSet" EntityType="Self.CarSet" />
+    <EntitySet Name="ClientSet" EntityType="Self.ClientSet" />
+    <EntitySet Name="EmployeeSet" EntityType="Self.EmployeeSet" />
+    <EntitySet Name="HouseSet" EntityType="Self.HouseSet" />
+    <EntitySet Name="PolicySet" EntityType="Self.PolicySet" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <AssociationSet Name="FK_AdressSetHouseSet" Association="Self.FK_AdressSetHouseSet">
+      <End Role="AdressSet" EntitySet="AdressSet" />
+      <End Role="HouseSet" EntitySet="HouseSet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ClientAdress" Association="Self.FK_ClientAdress">
+      <End Role="AdressSet" EntitySet="AdressSet" />
+      <End Role="ClientSet" EntitySet="ClientSet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CarPolicy" Association="Self.FK_CarPolicy">
+      <End Role="PolicySet" EntitySet="PolicySet" />
+      <End Role="CarSet" EntitySet="CarSet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PolicyClient" Association="Self.FK_PolicyClient">
+      <End Role="ClientSet" EntitySet="ClientSet" />
+      <End Role="PolicySet" EntitySet="PolicySet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_HousePolicy" Association="Self.FK_HousePolicy">
+      <End Role="PolicySet" EntitySet="PolicySet" />
+      <End Role="HouseSet" EntitySet="HouseSet" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
